@@ -1,0 +1,54 @@
+{
+  "patients": [
+    {
+      "id": 1,
+      "name": "Ali Khan",
+      "age": 32,
+      "gender": "Male",
+      "weight_kg": 78,
+      "height_cm": 175,
+      "bmi": 25.5,
+      "medical_condition": "Hypertension"
+    },
+    {
+      "id": 2,
+      "name": "Sara Ahmed",
+      "age": 28,
+      "gender": "Female",
+      "weight_kg": 62,
+      "height_cm": 165,
+      "bmi": 22.8,
+      "medical_condition": "None"
+    },
+    {
+      "id": 3,
+      "name": "Hassan Raza",
+      "age": 45,
+      "gender": "Male",
+      "weight_kg": 90,
+      "height_cm": 178,
+      "bmi": 28.4,
+      "medical_condition": "Diabetes"
+    },
+    {
+      "id": 4,
+      "name": "Fatima Noor",
+      "age": 35,
+      "gender": "Female",
+      "weight_kg": 70,
+      "height_cm": 160,
+      "bmi": 27.3,
+      "medical_condition": "Asthma"
+    },
+    {
+      "id": 5,
+      "name": "Usman Ali",
+      "age": 50,
+      "gender": "Male",
+      "weight_kg": 95,
+      "height_cm": 172,
+      "bmi": 32.1,
+      "medical_condition": "Obesity"
+    }
+  ]
+}

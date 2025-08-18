@@ -1,12 +1,21 @@
 from fastapi import FastAPI
+import json
 
 app = FastAPI()
 
+def load_data(path):
+    with open(path, "r") as f:
+        data = json.load(f)
+        return data
 
 @app.get("/")
 def home():
-    return {"message":"Hello world"}
+    return {"message":"Patient Management System"}
 
 @app.get("/about")
 def about():
-    return {"about":"Hello I am Muhammad Hashir"}
+    return {"about":"A Fully funtional API to manage patient records"}
+
+@app.get("/view")
+def view():
+    return load_data("patients.json")
