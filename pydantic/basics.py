@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, AnyUrl, Field
+from pydantic import BaseModel, EmailStr, AnyUrl,computed_field, Field
 from typing import List, Dict, Optional, Annotated
 
 class Patient(BaseModel):
@@ -10,6 +10,7 @@ class Patient(BaseModel):
     married: bool=True
     allergies : Annotated[Optional[List[str]],Field(max_length=5, default=None)]
     contact : Dict[str, str]
+    
 
 def insert_patient(patient:Patient):
     print(patient.name)
