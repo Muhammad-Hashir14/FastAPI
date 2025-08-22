@@ -16,9 +16,18 @@ class Patient(BaseModel):
 
     @computed_field
     @property
-    def bmi(self)-> float:
-        bmi= round(self.weight * (self.height**2),2)
+    def bmi(self)-> float:  
+        bmi = round(self.weight / (self.height ** 2), 2)
         return bmi
+
+class PatientUpdate(BaseModel):
+    name:Annotated[Optional[str], Field(default=None,description="Give name of the patient", examples=["Ali", "Ahsan"])]
+    age:Annotated[Optional[int], Field(default=None,gt=0, le=120,description="Give age of patient", examples=[24,54,23])]
+    gender:Annotated[Optional[str], Literal["male", "female", "others"], Field(default=None,description="give gender of the patient", examples=["male", "female"])]
+    weight:Annotated[Optional[float], Field(default=None,description="Give weight of patient in kgs", examples=[60.0, 40.5])]
+    height:Annotated[Optional[float], Field(default=None,description="Give height of the patient in meters", examples=[4.6,5.6])]
+    medical_condition:Annotated[Optional[str], Field(default=None, description="Give medical condition of patient", examples=["hypertension"])]
+
 
 
 app = FastAPI()
@@ -84,7 +93,44 @@ def create_patient(patient:Patient):
     if patient.id in data:
         raise HTTPException(status_code=400, detail = "patient already exists")
     
-    data[patient.id] = patient.model_dump(exclude=["id"])
+    data[patient.id] = patient.model_dump()
     save_data(data)
 
     return JSONResponse(status_code=201, content={"message": "data saved successfully"})
+
+@app.put("/edit/{patient_id}")
+def update_patient(patient_id:str, patient_update:PatientUpdate):
+
+    data = load_data("patients.json")
+    if patient_id not in data:
+        raise HTTPException(status_code=400, detail="Patient doesnot exists")
+    
+    patient_to_update=data[patient_id]
+
+    updated_data = patient_update.model_dump(exclude_unset=True)
+
+    for key, value in updated_data.items():
+        patient_to_update[key] = value
+
+    patient_to_update["id"] = patient_id
+    patient_object = Patient(**patient_to_update)
+    patient_object = patient_object.model_dump()
+
+    data[patient_id] = patient_object
+
+    save_data(data)
+
+    return JSONResponse(status_code=200, content={"message":"Patient updated sucessfully"})
+
+@app.delete("/delete/{patient_id}")
+def delete_patient(patient_id:str):
+    data = load_data("patients.json")
+
+    if patient_id not in data:
+        raise HTTPException(status_code=400, detail = "patient doesnot exists")
+    
+    del data[patient_id]
+    save_data(data)
+
+    return JSONResponse(status_code = 200, content="patient deleted successfully")
+
